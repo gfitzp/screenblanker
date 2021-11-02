@@ -19,10 +19,10 @@ The script can be called via crontab to enable/disable the screen at various tim
 
 ### To turn on
 ```
-/usr/bin/python3 /home/pi/Documents/screenblanker.py noblank
+/usr/bin/python3 /home/pi/Documents/screenblanker/screenblanker.py noblank
 ```
 
 ### To turn off
 ```
-/usr/bin/python3 /home/pi/Documents/screenblanker.py blank
+/usr/bin/python3 /home/pi/Documents/screenblanker/screenblanker.py blank
 ```
