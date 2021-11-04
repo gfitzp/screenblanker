@@ -2,12 +2,15 @@
 Script to toggle screen power on Raspberry Pi
 
 ## To install
-Copy the `screenblanker.desktop` file to the `~/.config/autostart/` directory and reboot.
+(Assuming the `screenblanker` directory is saved at `/home/pi/Documents/`...)
+
+Copy the `screenblanker.service` file to the appropriate systemd directory and reboot.
 
 ```
-mkdir -p ~/.config/autostart &&
-cp screenblanker.desktop ~/.config/autostart &&
-sudo reboot 
+sudo cp screenblanker.service /etc/systemd/system/ &&
+sudo systemctl daemon-reload &&
+sudo systemctl enable screenblanker.service &&
+sudo reboot
 ```
 
 ## To use

@@ -1,0 +1,13 @@
+[Unit]
+Description=screenblanker daemon
+After=graphical.target
+
+[Service]
+Type=idle
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/Documents/screenblanker/screenblanker.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=graphical.target
