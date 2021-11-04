@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=screenblanker daemon
-Exec=/usr/bin/python3 /home/pi/Documents/screenblanker/screenblanker.py
