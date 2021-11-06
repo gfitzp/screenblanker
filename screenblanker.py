@@ -4,8 +4,9 @@ import os
 import subprocess
 import sys
 
-from gpiozero import Button
-from time import sleep
+import RPi.GPIO as GPIO
+
+from signal import pause
 
 def get_current_status():
     process = subprocess.Popen(
@@ -21,7 +22,7 @@ def get_current_status():
     stdout, stderr = process.communicate()
     return(stdout.decode("utf-8"), stderr.decode("utf-8"))
 
-def toggle():
+def toggle(pin):
     stdout, stderr = get_current_status()
     if "prefer blanking:  no" in stdout:
         turn_off()
@@ -51,13 +52,18 @@ if __name__ == "__main__":
     os.environ["DISPLAY"] = ":0"
     os.environ["XAUTHORITY"] = "/home/pi/.XAuthority"
 
-    button = Button(24, bounce_time=0.1)
-    button.when_pressed = toggle
-
     if len(sys.argv) == 1:
-        print("Waiting for button input to toggle screen status...")
-        while True:
-            sleep(2)
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setwarnings(False)
+            GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            print("Waiting for button input to toggle screen status...")
+            GPIO.add_event_detect(24, GPIO.RISING, callback=toggle, bouncetime=200)
+            try:
+                pause()
+            except KeyboardInterrupt:
+                GPIO.cleanup()
+            GPIO.cleanup()
+
     else:
         if sys.argv[1] == "blank":
             print("User requested screen off. ", end="")
@@ -66,6 +72,7 @@ if __name__ == "__main__":
                 turn_off()
             else:
                 print("Screen is already off.")
+
         elif sys.argv[1] == "noblank":
             print("User requested screen on. ", end="")
             stdout, stderr = get_current_status()
@@ -73,6 +80,7 @@ if __name__ == "__main__":
                 turn_on()
             else:
                 print("Screen is already on.")
+
         else:
             print(f"'{sys.argv[1]}' is an invalid argument!")
             print("Should be 'blank' or 'noblank', or no argument for button toggle.")
