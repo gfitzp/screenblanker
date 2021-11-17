@@ -24,10 +24,11 @@ def get_current_status():
 
 def toggle(pin):
     stdout, stderr = get_current_status()
-    if "prefer blanking:  no" in stdout:
-        turn_off()
-    else:
-        turn_on()
+    if GPIO.input(pin) == 0:
+        if "prefer blanking:  no" in stdout:
+            turn_off()
+        else:
+            turn_on()
 
 def turn_off():
     print("Screen is on; turning screen off.")
@@ -53,16 +54,17 @@ if __name__ == "__main__":
     os.environ["XAUTHORITY"] = "/home/pi/.XAuthority"
 
     if len(sys.argv) == 1:
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setwarnings(False)
-            GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-            print("Waiting for button input to toggle screen status...")
-            GPIO.add_event_detect(24, GPIO.RISING, callback=toggle, bouncetime=200)
-            try:
-                pause()
-            except KeyboardInterrupt:
-                GPIO.cleanup()
+        GPIO_PIN = 24
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(GPIO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        print("Waiting for button input to toggle screen status...")
+        GPIO.add_event_detect(GPIO_PIN, GPIO.FALLING, callback=toggle)
+        try:
+            pause()
+        except KeyboardInterrupt:
             GPIO.cleanup()
+        GPIO.cleanup()
 
     else:
         if sys.argv[1] == "blank":
