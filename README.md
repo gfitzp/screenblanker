@@ -16,7 +16,7 @@ sudo reboot
 ## To use
 I wired a button between the GPIO pin 24 and ground. If you wire up a different GPIO pin make sure to change the pin number in the script.
 
-To prevent the button from bouncing, install a 100nF capacitor between GPIO pin 24 and ground as well. (See https://forums.raspberrypi.com/viewtopic.php?t=131440&start=50#p890185 for info.)
+To prevent the button from bouncing, install a 100nF capacitor in parallel between GPIO pin 24 and ground as well. (See https://forums.raspberrypi.com/viewtopic.php?t=131440&start=50#p890185 for info.)
 
 The script should run in the background; push the button to toggle the screen backlight on or off.
 
