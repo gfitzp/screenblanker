@@ -13,6 +13,13 @@ sudo systemctl enable screenblanker.service &&
 sudo reboot
 ```
 
+On Bullseye I needed to also comment out the vc4-kms-v3d driver in /boot/config.txt:
+
+```
+# Enable DRM VC4 V3D driver
+#dtoverlay=vc4-kms-v3d
+```
+
 ## To use
 I wired a button between the GPIO pin 24 and ground. If you wire up a different GPIO pin make sure to change the pin number in the script.
 
